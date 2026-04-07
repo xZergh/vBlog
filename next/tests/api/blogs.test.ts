@@ -69,4 +69,18 @@ describe('/api/blogs handler', () => {
       message: 'Invalid pagination parameters',
     });
   });
+
+  it('returns 500 when upstream fetch throws', async () => {
+    const { default: handler } = await import('../../pages/api/blogs');
+    getAllBlogsMock.mockRejectedValue(new Error('Sanity unavailable'));
+    const status = vi.fn().mockReturnThis();
+    const json = vi.fn();
+    const req = { method: 'GET', query: {} };
+    const res = { status, json };
+
+    await handler(req as never, res as never);
+
+    expect(status).toHaveBeenCalledWith(500);
+    expect(json).toHaveBeenCalledWith({ message: 'Internal server error' });
+  });
 });
