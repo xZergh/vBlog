@@ -1,6 +1,36 @@
+import type { NextApiRequest, NextApiResponse } from 'next';
 import { getAllBlogs } from '../../lib/api';
 
-export default async function handler(req, res) {
+type SortOrder = 'asc' | 'desc';
+
+type BlogSummary = {
+  slug: string;
+  title?: string;
+  subtitle?: string;
+  date?: string;
+  author?: {
+    name?: string;
+    avatar?: string;
+  };
+  coverImage?: string;
+};
+
+type BlogsSuccessResponse = {
+  blogs: BlogSummary[];
+  hasMore: boolean;
+  total: number;
+  page: number;
+  limit: number;
+};
+
+type ErrorResponse = {
+  message: string;
+};
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<BlogsSuccessResponse | ErrorResponse>
+) {
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -26,24 +56,22 @@ export default async function handler(req, res) {
 
     const normalizedDate =
       typeof queryDate === 'string' ? queryDate.toLowerCase() : 'desc';
-    const sortOrder = normalizedDate === 'asc' ? 'asc' : 'desc';
+    const sortOrder: SortOrder = normalizedDate === 'asc' ? 'asc' : 'desc';
 
     const allBlogs = await getAllBlogs(sortOrder);
     const safeBlogs = Array.isArray(allBlogs) ? allBlogs : [];
     const paginatedBlogs = safeBlogs.slice(offset, offset + limitNum);
     const hasMore = offset + limitNum < safeBlogs.length;
 
-    const response = {
+    return res.status(200).json({
       blogs: paginatedBlogs,
       hasMore,
       total: safeBlogs.length,
       page: pageNum,
       limit: limitNum,
-    };
-
-    res.status(200).json(response);
+    });
   } catch (error) {
     console.error('Error fetching blogs:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error' });
   }
 }

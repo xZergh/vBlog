@@ -7,23 +7,17 @@ const dataset =
   process.env.NEXT_PUBLIC_SANITY_DATASET ||
   'production';
 
-const client = projectId
-  ? createClient({
-      dataset,
-      projectId,
-      useCdn: process.env.NODE_ENV === 'production',
-      apiVersion: '2023-05-03',
-    })
-  : null;
-
 const missingProjectIdError =
   'Missing Sanity project ID. Set SANITY_PROJECT_ID or NEXT_PUBLIC_SANITY_PROJECT_ID.';
+if (!projectId) {
+  throw new Error(missingProjectIdError);
+}
 
-export default {
-  fetch: (...args) => {
-    if (!client) {
-      throw new Error(missingProjectIdError);
-    }
-    return client.fetch(...args);
-  },
-};
+const client = createClient({
+  dataset,
+  projectId,
+  useCdn: process.env.NODE_ENV === 'production',
+  apiVersion: '2023-05-03',
+});
+
+export default client;
