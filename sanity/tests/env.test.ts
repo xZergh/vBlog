@@ -13,4 +13,14 @@ describe('getRequiredEnv', () => {
       'Missing required environment variable: SANITY_STUDIO_PROJECT_ID',
     )
   })
+
+  it('trims whitespace for required studio env vars', () => {
+    vi.stubEnv('SANITY_STUDIO_DATASET', ' production\n')
+    expect(getRequiredEnv('SANITY_STUDIO_DATASET')).toBe('production')
+  })
+
+  it('reads generic env names as fallback', () => {
+    vi.stubEnv('CUSTOM_ENV_NAME', 'value123')
+    expect(getRequiredEnv('CUSTOM_ENV_NAME')).toBe('value123')
+  })
 })
