@@ -1,0 +1,53 @@
+{
+  "name": "blog-me-sanity",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sanity Studio for Blog Me - A modern blog CMS",
+  "main": "package.json",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "type-check": "tsc --noEmit",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "clean": "rm -rf dist .sanity",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "npm run type-check && npm run lint && npm run format:check && npm run test"
+  },
+  "keywords": [
+    "sanity",
+    "cms",
+    "blog",
+    "content-management",
+    "typescript"
+  ],
+  "dependencies": {
+    "@sanity/code-input": "^6.0.1",
+    "@sanity/vision": "^4.22.0",
+    "react": "^19.1",
+    "react-dom": "^19.1",
+    "sanity": "^4.22.0",
+    "styled-components": "^6.1.18"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^5.0.2",
+    "@types/react": "^19.1",
+    "eslint": "^9.28",
+    "prettier": "^3.5",
+    "typescript": "^5.8",
+    "vitest": "^4.1.2"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100,
+    "bracketSpacing": false,
+    "singleQuote": true
+  }
+}
