@@ -1,4 +1,5 @@
 import { PortableText } from '@portabletext/react';
+import Image from 'next/image';
 import { getCompressedImageUrl } from '../lib/utils';
 import HighlightCode from './HighlightCode';
 import ImageErrorBoundary from './ImageErrorBoundary';
@@ -16,13 +17,19 @@ const portableTextComponents = {
       return (
         <ImageErrorBoundary>
           <div className='blog-image'>
-            <img
-              src={getCompressedImageUrl(asset?.url, 600, 300, 'crop')}
+            <Image
+              src={
+                getCompressedImageUrl(asset?.url, 600, 300, 'crop') ||
+                '/file.svg'
+              }
               alt={alt || ''}
+              width={600}
+              height={300}
               style={{
                 maxWidth: '100%',
                 margin: '1rem 0',
               }}
+              unoptimized
               onError={e => {
                 const target = e.currentTarget as HTMLImageElement;
                 target.style.display = 'none';

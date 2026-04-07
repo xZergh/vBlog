@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getCompressedImageUrl } from '../lib/utils';
 import type { BlogAuthor } from '../lib/api';
 
@@ -29,10 +30,16 @@ const CardItem = ({
     <Card className='fj-card'>
       <div className='card-body-wrapper'>
         <Card.Header className='d-flex flex-row'>
-          <img
-            src={getCompressedImageUrl(author?.avatar, 50, 50, 'crop')}
+          <Image
+            src={
+              getCompressedImageUrl(author?.avatar, 50, 50, 'crop') ||
+              '/file.svg'
+            }
             className='rounded-circle me-3'
             alt='avatar'
+            width={50}
+            height={50}
+            unoptimized
           />
           <div>
             <Card.Title className='font-weight-bold mb-1'>
@@ -42,14 +49,19 @@ const CardItem = ({
           </div>
         </Card.Header>
         <div className='view overlay card-image-container'>
-          <Card.Img
-            src={getCompressedImageUrl(coverImage, 320, 240, 'crop')}
+          <Image
+            src={
+              getCompressedImageUrl(coverImage, 320, 240, 'crop') || '/file.svg'
+            }
             alt='Card image cap'
             className='card-image'
+            width={320}
+            height={240}
             style={{
               maxWidth: '100%',
               margin: '1rem 0',
             }}
+            unoptimized
           />
         </div>
         <Card.Body>

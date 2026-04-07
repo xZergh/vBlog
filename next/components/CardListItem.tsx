@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
 import Link from 'next/link';
+import Image from 'next/image';
 import { formatDateShort } from '../lib/dateUtils';
 import type { BlogAuthor } from '../lib/api';
 
@@ -27,12 +28,13 @@ const CardListItem = ({
     <Card className='fj-card fj-card-list'>
       <div className='card-body-wrapper'>
         <Card.Header className='d-flex flex-row'>
-          <img
-            src={author?.avatar}
+          <Image
+            src={author?.avatar || '/file.svg'}
             className='rounded-circle me-3'
-            height='50px'
-            width='50px'
+            height={50}
+            width={50}
             alt='avatar'
+            unoptimized
           />
           <div>
             <Card.Title className='font-weight-bold mb-1'>
