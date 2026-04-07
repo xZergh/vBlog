@@ -1,9 +1,7 @@
-import { useRef, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import Prism from 'prismjs';
 
-// Import CSS theme
-import 'prismjs/themes/prism-tomorrow.css'; // You can choose different themes
-// Import language support
+import 'prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-jsx';
@@ -16,8 +14,17 @@ import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-markdown';
 
-export default function HighlightCode({ children, language = 'javascript' }) {
-  const codeRef = useRef();
+type HighlightCodeProps = {
+  children: string;
+  language?: string;
+  filename?: string;
+};
+
+export default function HighlightCode({
+  children,
+  language = 'javascript',
+}: HighlightCodeProps) {
+  const codeRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (codeRef.current) {

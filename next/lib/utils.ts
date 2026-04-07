@@ -1,4 +1,12 @@
-type FitMode = 'crop' | 'clip' | 'fill' | 'fillmax' | 'max' | 'scale' | 'min';
+type FitMode =
+  | 'crop'
+  | 'clip'
+  | 'fill'
+  | 'fillmax'
+  | 'fit'
+  | 'max'
+  | 'scale'
+  | 'min';
 
 export function getCompressedImageUrl(
   imageUrl: string | undefined,

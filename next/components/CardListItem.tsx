@@ -1,10 +1,30 @@
 import { Card } from 'react-bootstrap';
 import Link from 'next/link';
 import { formatDateShort } from '../lib/dateUtils';
+import type { BlogAuthor } from '../lib/api';
 
-const CardListItem = ({ title, subtitle, author, link, date }) => {
+type CardLink = {
+  href: string;
+  as: string;
+};
+
+type CardListItemProps = {
+  title?: string;
+  subtitle?: string;
+  author?: BlogAuthor;
+  link?: CardLink;
+  date?: string;
+};
+
+const CardListItem = ({
+  title,
+  subtitle,
+  author,
+  link,
+  date,
+}: CardListItemProps) => {
   return (
-    <Card className={`fj-card fj-card-list`}>
+    <Card className='fj-card fj-card-list'>
       <div className='card-body-wrapper'>
         <Card.Header className='d-flex flex-row'>
           <img
@@ -18,7 +38,9 @@ const CardListItem = ({ title, subtitle, author, link, date }) => {
             <Card.Title className='font-weight-bold mb-1'>
               {author?.name}
             </Card.Title>
-            <Card.Text className='card-date'>{formatDateShort(date)}</Card.Text>
+            <Card.Text className='card-date'>
+              {date ? formatDateShort(date) : ''}
+            </Card.Text>
           </div>
         </Card.Header>
         <Card.Body>
@@ -28,7 +50,7 @@ const CardListItem = ({ title, subtitle, author, link, date }) => {
       </div>
 
       {link && (
-        <Link className='card-button' {...link}>
+        <Link className='card-button' href={link.href} as={link.as}>
           Read More
         </Link>
       )}

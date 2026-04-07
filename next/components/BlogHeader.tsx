@@ -1,12 +1,20 @@
 import { getCompressedImageUrl } from '../lib/utils';
+import type { BlogAuthor } from '../lib/api';
+
+type BlogHeaderProps = {
+  title?: string;
+  subtitle?: string;
+  date?: string;
+  coverImage?: string;
+  author?: BlogAuthor;
+};
 
 export default function BlogHeader({
   title,
   subtitle,
   date,
-  coverImage,
   author,
-}) {
+}: BlogHeaderProps) {
   return (
     <div className='blog-detail-header'>
       <p className='lead mb-0'>
@@ -17,7 +25,7 @@ export default function BlogHeader({
           width='50px'
           alt='avatar'
         />
-        {author.name}
+        {author?.name}
         {', '} {date}
       </p>
       <h1 className='font-weight-bold blog-detail-header-title mb-0'>

@@ -1,11 +1,19 @@
+import { Col, Row } from 'react-bootstrap';
+import type {
+  GetStaticPaths,
+  GetStaticProps,
+  InferGetStaticPropsType,
+} from 'next';
 import PageLayout from '../../components/PageLayout';
 import BlogHeader from '../../components/BlogHeader';
 import BlogContent from '../../components/BlogContent';
-import { Row, Col } from 'react-bootstrap';
-import { getBlogBySlug, getAllBlogs } from '../../lib/api';
+import { getAllBlogs, getBlogBySlug } from '../../lib/api';
 import { getCompressedImageUrl } from '../../lib/utils';
+import type { Blog } from '../../lib/api';
 
-const BlogDetail = ({ blog }) => {
+const BlogDetail = ({
+  blog,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <PageLayout className='blog-detail-page'>
       <Row>
@@ -25,8 +33,12 @@ const BlogDetail = ({ blog }) => {
   );
 };
 
-export async function getStaticProps({ params }) {
-  const blog = await getBlogBySlug(params.slug);
+export const getStaticProps: GetStaticProps<
+  { blog: Blog },
+  { slug: string }
+> = async ({ params }) => {
+  const slug = params?.slug ?? '';
+  const blog = await getBlogBySlug(slug);
 
   if (!blog) {
     return {
@@ -41,17 +53,20 @@ export async function getStaticProps({ params }) {
     },
     revalidate: 60,
   };
-}
+};
 
-export async function getStaticPaths() {
+export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
   const blogs = await getAllBlogs();
-  const paths = blogs.map(blog => {
-    return { params: { slug: blog.slug } };
-  });
+  const paths = blogs
+    .filter(blog => Boolean(blog.slug))
+    .map(blog => ({
+      params: { slug: blog.slug },
+    }));
+
   return {
-    paths: paths,
+    paths,
     fallback: false,
   };
-}
+};
 
 export default BlogDetail;

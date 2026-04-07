@@ -1,4 +1,5 @@
 import client from './sanity';
+import type { TypedObject } from '@portabletext/types';
 
 type SortDirection = 'asc' | 'desc';
 
@@ -14,7 +15,7 @@ export type Blog = {
   date?: string;
   author?: BlogAuthor;
   coverImage?: string;
-  content?: unknown[];
+  content?: TypedObject[];
 };
 
 const blogFields = `

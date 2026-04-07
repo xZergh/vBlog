@@ -1,9 +1,20 @@
 import { Navbar, Nav } from 'react-bootstrap';
 import Link from 'next/link';
+import type { Theme } from '../context/ThemeContext';
 
-const BlogNavbar = ({theme, toggleTheme}) => {
+type BlogNavbarProps = {
+  theme: Theme;
+  toggleTheme: () => void;
+};
+
+const BlogNavbar = ({ theme, toggleTheme }: BlogNavbarProps) => {
   return (
-    <Navbar variant={theme.type} className='fj-navbar fj-nav-base' bg='transparent' expand='lg'>
+    <Navbar
+      variant={theme.type}
+      className='fj-navbar fj-nav-base'
+      bg='transparent'
+      expand='lg'
+    >
       <Navbar.Brand className='fj-navbar-brand'>
         <Link href='/'>AQA Ninja</Link>
       </Navbar.Brand>
@@ -17,21 +28,20 @@ const BlogNavbar = ({theme, toggleTheme}) => {
             href='/'
             as={() => (
               <Link href='/' className='fj-navbar-item fj-navbar-link'>
-                {' '}
                 Home
               </Link>
             )}
           />
-          <div className="theme-toggle-container">
-            <label className="theme-toggle">
-              <input 
-                type="checkbox" 
-                checked={theme.type === 'dark'} 
+          <div className='theme-toggle-container'>
+            <label className='theme-toggle'>
+              <input
+                type='checkbox'
+                checked={theme.type === 'dark'}
                 onChange={toggleTheme}
-                className="theme-toggle-input"
+                className='theme-toggle-input'
               />
-              <span className="theme-toggle-slider">
-                <span className="theme-toggle-icon">
+              <span className='theme-toggle-slider'>
+                <span className='theme-toggle-icon'>
                   {theme.type === 'light' ? '☀️' : '🌙'}
                 </span>
               </span>

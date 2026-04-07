@@ -1,9 +1,22 @@
-import { ArrowDownZA, ArrowUpAZ, Rows3, LayoutGrid } from 'lucide-react';
+import { ArrowDownZA, ArrowUpAZ, LayoutGrid, Rows3 } from 'lucide-react';
 
-const FilterMenu = ({ onChange, filter }) => {
+type FilterState = {
+  view: { list: boolean };
+  date: { asc: boolean };
+};
+
+type FilterMenuProps = {
+  onChange: (
+    option: 'view' | 'date',
+    value: { list?: boolean; asc?: boolean }
+  ) => void;
+  filter: FilterState;
+};
+
+const FilterMenu = ({ onChange, filter }: FilterMenuProps) => {
   const CurrentViewIcon = filter.view.list ? Rows3 : LayoutGrid;
   const CurrentSortIcon = filter.date.asc ? ArrowUpAZ : ArrowDownZA;
-  
+
   return (
     <div className='filter-menu mb-2'>
       <span className='mr-3'>
@@ -20,7 +33,6 @@ const FilterMenu = ({ onChange, filter }) => {
           size={32}
           className='icon clickable hoverable'
           onClick={() => {
-            // Pass an object with asc property to maintain consistency
             onChange('date', { asc: !filter.date.asc });
           }}
         />
