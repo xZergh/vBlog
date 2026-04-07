@@ -4,7 +4,7 @@ const fetchMock = vi.fn();
 
 vi.mock('../../lib/sanity', () => ({
   default: {
-    fetch: (...args) => fetchMock(...args),
+    fetch: (...args: unknown[]) => fetchMock(...args),
   },
 }));
 
@@ -19,7 +19,7 @@ describe('lib/api', () => {
 
     await getAllBlogs();
 
-    const [query] = fetchMock.mock.calls[0];
+    const [query] = fetchMock.mock.calls[0] as [string];
     expect(query).toContain('order(date desc)');
   });
 
@@ -29,7 +29,7 @@ describe('lib/api', () => {
 
     await getBlogs(1, 6, 'asc');
 
-    const [query] = fetchMock.mock.calls[0];
+    const [query] = fetchMock.mock.calls[0] as [string];
     expect(query).toContain('order(date asc)');
     expect(query).toContain('[6...12]');
   });

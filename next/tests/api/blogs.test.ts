@@ -3,7 +3,8 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 const getAllBlogsMock = vi.fn();
 
 vi.mock('../../lib/api', () => ({
-  getAllBlogs: (...args) => getAllBlogsMock(...args),
+  getAllBlogs: (...args: Parameters<typeof getAllBlogsMock>) =>
+    getAllBlogsMock(...args),
 }));
 
 describe('/api/blogs handler', () => {
@@ -18,7 +19,7 @@ describe('/api/blogs handler', () => {
     const req = { method: 'POST', query: {} };
     const res = { status, json };
 
-    await handler(req, res);
+    await handler(req as never, res as never);
 
     expect(status).toHaveBeenCalledWith(405);
     expect(json).toHaveBeenCalledWith({ message: 'Method not allowed' });
@@ -41,7 +42,7 @@ describe('/api/blogs handler', () => {
     };
     const res = { status, json };
 
-    await handler(req, res);
+    await handler(req as never, res as never);
 
     expect(getAllBlogsMock).toHaveBeenCalledWith('asc');
     expect(status).toHaveBeenCalledWith(200);
@@ -61,7 +62,7 @@ describe('/api/blogs handler', () => {
     const req = { method: 'GET', query: { page: '-1', limit: '0' } };
     const res = { status, json };
 
-    await handler(req, res);
+    await handler(req as never, res as never);
 
     expect(status).toHaveBeenCalledWith(400);
     expect(json).toHaveBeenCalledWith({
