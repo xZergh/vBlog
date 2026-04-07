@@ -1,5 +1,13 @@
 export function getRequiredEnv(name: string): string {
-  const value = process.env[name]
+  // Use static key access so client bundles can inline these values.
+  const value =
+    name === 'SANITY_STUDIO_PROJECT_ID'
+      ? process.env.SANITY_STUDIO_PROJECT_ID
+      : name === 'SANITY_STUDIO_DATASET'
+        ? process.env.SANITY_STUDIO_DATASET
+        : name === 'SANITY_STUDIO_API_VERSION'
+          ? process.env.SANITY_STUDIO_API_VERSION
+          : process.env[name]
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`)
   }
